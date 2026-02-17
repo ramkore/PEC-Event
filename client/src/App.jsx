@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { useContext } from 'react';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -6,16 +7,19 @@ import Events from './pages/EventDiscovery';
 import EventDetails from './pages/EventDetails';
 import Dashboard from './pages/Dashboard';
 import AdminPanel from './pages/AdminPanel';
+import AuthContext from './context/AuthContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const PrivateRoute = ({ children }) => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const { user, loading } = useContext(AuthContext);
+    if (loading) return null;
     return user ? children : <Navigate to="/login" />;
 };
 
 const AdminRoute = ({ children }) => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const { user, loading } = useContext(AuthContext);
+    if (loading) return null;
     return user && user.isAdmin ? children : <Navigate to="/" />;
 };
 

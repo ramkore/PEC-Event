@@ -6,7 +6,7 @@ import AuthContext from '../context/AuthContext';
 const CATEGORIES = ['Sports Fest', 'Technical Fest', 'Cultural Fest', 'Annual Day'];
 
 const AdminPanel = () => {
-    const { user } = useContext(AuthContext);
+    const { user, loading: authLoading } = useContext(AuthContext);
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('dashboard');
     const [stats, setStats] = useState(null);
@@ -21,12 +21,13 @@ const AdminPanel = () => {
     });
 
     useEffect(() => {
+        if (authLoading) return;
         if (!user || !user.isAdmin) {
             navigate('/');
             return;
         }
         fetchData(activeTab);
-    }, [activeTab, user, navigate]);
+    }, [activeTab, user, navigate, authLoading]);
 
     const fetchData = async (tab) => {
         setLoading(true);
