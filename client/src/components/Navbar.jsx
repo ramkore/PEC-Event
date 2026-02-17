@@ -17,6 +17,9 @@ const Navbar = () => {
                     {user ? (
                         <>
                             <Link to="/dashboard" className="mr-4 hover:text-blue-200">Dashboard</Link>
+                            {user.isAdmin && (
+                                <Link to="/admin" className="mr-4 hover:text-blue-200 font-semibold">🛡️ Admin</Link>
+                            )}
                             <button onClick={logout} className="bg-red-500 px-3 py-1 rounded hover:bg-red-600">Logout</button>
                         </>
                     ) : (

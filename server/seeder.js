@@ -43,7 +43,15 @@ const importData = async () => {
             password: 'password123'
         });
 
-        console.log('Users Created...');
+        // Create admin user
+        await User.create({
+            name: 'PEC Admin',
+            email: 'pec',
+            password: 'pec123',
+            isAdmin: true
+        });
+
+        console.log('Users Created (including admin: pec / pec123)...');
 
         // PEC College Events from Circular (Lr.No:PEC/EST/ADMIN/Feb-26, Date: 11/02/2026)
         const events = [
@@ -53,7 +61,7 @@ const importData = async () => {
                 description: 'Annual Sports Fest at Pallavi Engineering College. Day 1 features cricket, volleyball, and athletics events. All departments are encouraged to participate.\n\nConvenor: K Dhanunjaya Rao\nCo-Convenor: Dr V Sridhar\n\nAll staff members and students are requested to extend their full coordination and support.',
                 location: 'PEC Campus, Kuntloor, Abdullapurmet',
                 date: new Date('2026-03-23T09:00:00'),
-                category: 'Sports',
+                category: 'Sports Fest',
                 capacity: 500,
                 organizer: createdUsersList[0]._id
             },
@@ -62,7 +70,7 @@ const importData = async () => {
                 description: 'Annual Sports Fest at Pallavi Engineering College. Day 2 features basketball, badminton, kabaddi, and prize distribution ceremony.\n\nConvenor: K Dhanunjaya Rao\nCo-Convenor: Dr V Sridhar\n\nAll staff members and students are requested to extend their full coordination and support.',
                 location: 'PEC Campus, Kuntloor, Abdullapurmet',
                 date: new Date('2026-03-24T09:00:00'),
-                category: 'Sports',
+                category: 'Sports Fest',
                 capacity: 500,
                 organizer: createdUsersList[0]._id
             },
@@ -72,7 +80,7 @@ const importData = async () => {
                 description: 'Annual Technical Fest at Pallavi Engineering College. Day 1 features coding competitions, hackathon kickoff, paper presentations, and technical quiz.\n\nConvenor: Y Pavan Kumar Gupta\nCo-Convenors: M Ravi, Dr B Sathish\n\nAll staff members and students are requested to extend their full coordination and support.',
                 location: 'PEC Campus, Kuntloor, Abdullapurmet',
                 date: new Date('2026-03-25T09:00:00'),
-                category: 'Tech',
+                category: 'Technical Fest',
                 capacity: 300,
                 organizer: createdUsersList[1]._id
             },
@@ -81,7 +89,7 @@ const importData = async () => {
                 description: 'Annual Technical Fest at Pallavi Engineering College. Day 2 features hackathon finals, robotics showcase, project exhibition, and valedictory ceremony.\n\nConvenor: Y Pavan Kumar Gupta\nCo-Convenors: M Ravi, Dr B Sathish\n\nAll staff members and students are requested to extend their full coordination and support.',
                 location: 'PEC Campus, Kuntloor, Abdullapurmet',
                 date: new Date('2026-03-27T09:00:00'),
-                category: 'Tech',
+                category: 'Technical Fest',
                 capacity: 300,
                 organizer: createdUsersList[1]._id
             },
@@ -91,7 +99,7 @@ const importData = async () => {
                 description: 'Annual Cultural Fest at Pallavi Engineering College. Features dance performances, singing competitions, fashion show, drama, and art exhibitions.\n\nConvenor: Dr D Ramya\n\nAll staff members and students are requested to extend their full coordination and support.',
                 location: 'PEC Campus, Kuntloor, Abdullapurmet',
                 date: new Date('2026-03-27T14:00:00'),
-                category: 'Music',
+                category: 'Cultural Fest',
                 capacity: 600,
                 organizer: createdUsersList[2]._id
             },
@@ -101,7 +109,7 @@ const importData = async () => {
                 description: 'Annual Day celebration at Pallavi Engineering College. Features chief guest address, student achievements recognition, cultural performances, and awards ceremony for AY 2025-2026.\n\nConvenor: Dr Sai Hareesh\nCo-Convenor: D Navya\n\nAll staff members and students are requested to extend their full coordination and support.',
                 location: 'PEC Campus, Kuntloor, Abdullapurmet',
                 date: new Date('2026-03-28T10:00:00'),
-                category: 'Other',
+                category: 'Annual Day',
                 capacity: 1000,
                 organizer: createdUsersList[3]._id
             },
@@ -111,7 +119,7 @@ const importData = async () => {
                 description: 'Hands-on workshop on Artificial Intelligence and Machine Learning. Learn about neural networks, deep learning, and real-world AI applications.\n\nOrganized by CSE (AIML) Department.',
                 location: 'PEC Campus, Seminar Hall - Block A',
                 date: new Date('2026-04-05T10:00:00'),
-                category: 'Tech',
+                category: 'Technical Fest',
                 capacity: 60,
                 organizer: createdUsersList[4]._id
             },
@@ -120,7 +128,7 @@ const importData = async () => {
                 description: 'Full-stack web development bootcamp covering MERN stack (MongoDB, Express, React, Node.js). Build a real-world project in one day!\n\nOrganized by CSE Department.',
                 location: 'PEC Campus, Computer Lab - Block B',
                 date: new Date('2026-04-10T09:00:00'),
-                category: 'Tech',
+                category: 'Technical Fest',
                 capacity: 40,
                 organizer: createdUsersList[1]._id
             },
@@ -129,7 +137,7 @@ const importData = async () => {
                 description: 'Inter-college cricket tournament featuring teams from colleges across Telangana. Knockout format with semifinals and finals.',
                 location: 'PEC Cricket Ground, Kuntloor',
                 date: new Date('2026-04-15T08:00:00'),
-                category: 'Sports',
+                category: 'Sports Fest',
                 capacity: 200,
                 organizer: createdUsersList[0]._id
             },
@@ -138,7 +146,7 @@ const importData = async () => {
                 description: 'Present your startup ideas to a panel of industry experts and investors. Top 3 ideas will receive mentorship and incubation support from PEC Entrepreneurship Cell.',
                 location: 'PEC Campus, Auditorium',
                 date: new Date('2026-04-20T10:00:00'),
-                category: 'Business',
+                category: 'Technical Fest',
                 capacity: 80,
                 organizer: createdUsersList[3]._id
             },
@@ -147,7 +155,7 @@ const importData = async () => {
                 description: 'Learn about cyber threats, ethical hacking, secure coding practices, and how to protect your digital identity. Guest speaker from the IT industry.',
                 location: 'PEC Campus, Seminar Hall - Block C',
                 date: new Date('2026-04-25T11:00:00'),
-                category: 'Tech',
+                category: 'Technical Fest',
                 capacity: 100,
                 organizer: createdUsersList[4]._id
             },
@@ -156,7 +164,7 @@ const importData = async () => {
                 description: 'An evening of live music performances by PEC students and guest bands. Genres include rock, classical, and Bollywood hits.',
                 location: 'PEC Campus, Open Air Amphitheatre',
                 date: new Date('2026-03-26T18:00:00'),
-                category: 'Music',
+                category: 'Cultural Fest',
                 capacity: 400,
                 organizer: createdUsersList[2]._id
             },
@@ -166,7 +174,7 @@ const importData = async () => {
                 description: 'Orientation day for new batch of engineering students. Welcome address by the Principal, department introductions, and campus tour.',
                 location: 'PEC Campus, Main Auditorium',
                 date: new Date('2025-08-01T10:00:00'),
-                category: 'Other',
+                category: 'Annual Day',
                 capacity: 800,
                 organizer: createdUsersList[3]._id
             }
@@ -178,6 +186,7 @@ const importData = async () => {
         console.log('\nTest Accounts:');
         console.log('  Faculty: user1@pec.edu.in / password123');
         console.log('  Student: student@pec.edu.in / password123');
+        console.log('  Admin:   pec / pec123');
         process.exit();
     } catch (error) {
         console.error(`${error}`);

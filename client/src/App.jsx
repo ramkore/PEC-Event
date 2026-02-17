@@ -5,12 +5,18 @@ import Register from './pages/Register';
 import Events from './pages/EventDiscovery';
 import EventDetails from './pages/EventDetails';
 import Dashboard from './pages/Dashboard';
+import AdminPanel from './pages/AdminPanel';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const PrivateRoute = ({ children }) => {
     const user = JSON.parse(localStorage.getItem('user'));
     return user ? children : <Navigate to="/login" />;
+};
+
+const AdminRoute = ({ children }) => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    return user && user.isAdmin ? children : <Navigate to="/" />;
 };
 
 function App() {
@@ -25,6 +31,7 @@ function App() {
                     <Route path="/events" element={<Events />} />
                     <Route path="/events/:id" element={<EventDetails />} />
                     <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+                    <Route path="/admin" element={<AdminRoute><AdminPanel /></AdminRoute>} />
                 </Routes>
             </div>
             <ToastContainer position="bottom-right" />
@@ -33,3 +40,4 @@ function App() {
 }
 
 export default App
+
