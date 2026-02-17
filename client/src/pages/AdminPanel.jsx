@@ -3,14 +3,12 @@ import api from '../utils/api';
 
 const CATEGORIES = ['Sports Fest', 'Technical Fest', 'Cultural Fest', 'Annual Day'];
 
-const ADMIN_USERNAME = 'pec';
-const ADMIN_PASSWORD = 'pec123';
-
 const AdminPanel = () => {
     const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
     const [loginUsername, setLoginUsername] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
     const [loginError, setLoginError] = useState('');
+    const [loginLoading, setLoginLoading] = useState(false);
     const [activeTab, setActiveTab] = useState('dashboard');
     const [stats, setStats] = useState(null);
     const [events, setEvents] = useState([]);
@@ -23,14 +21,51 @@ const AdminPanel = () => {
         name: '', description: '', location: '', date: '', category: CATEGORIES[0], capacity: ''
     });
 
-    const handleAdminLogin = (e) => {
-        e.preventDefault();
-        if (loginUsername === ADMIN_USERNAME && loginPassword === ADMIN_PASSWORD) {
-            setIsAdminAuthenticated(true);
-            setLoginError('');
-        } else {
-            setLoginError('Invalid username or password');
+    // Check if admin is already authenticated on mount
+    useEffect(() => {
+        try {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user && user.isAdmin) {
+                setIsAdminAuthenticated(true);
+            }
+        } catch (error) {
+            // Invalid JSON in localStorage, clear it
+            localStorage.removeItem('user');
         }
+    }, []);
+
+    const handleAdminLogin = async (e) => {
+        e.preventDefault();
+        setLoginLoading(true);
+        setLoginError('');
+        
+        try {
+            // Call the backend login API
+            const response = await api.post('/auth/login', { 
+                email: loginUsername, 
+                password: loginPassword 
+            });
+            
+            if (response.data && response.data.isAdmin) {
+                // Store user data with token
+                localStorage.setItem('user', JSON.stringify(response.data));
+                setIsAdminAuthenticated(true);
+                setLoginError('');
+            } else {
+                setLoginError('Access denied. Admin privileges required.');
+            }
+        } catch (error) {
+            setLoginError(error.response?.data?.message || 'Invalid username or password');
+        } finally {
+            setLoginLoading(false);
+        }
+    };
+
+    const handleAdminLogout = () => {
+        localStorage.removeItem('user');
+        setIsAdminAuthenticated(false);
+        setLoginUsername('');
+        setLoginPassword('');
     };
 
     useEffect(() => {
@@ -174,9 +209,12 @@ const AdminPanel = () => {
                         )}
                         <button
                             type="submit"
-                            className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition font-semibold shadow-lg hover:shadow-xl"
+                            disabled={loginLoading}
+                            className={`w-full text-white py-3 rounded-lg transition font-semibold shadow-lg hover:shadow-xl ${
+                                loginLoading ? 'bg-indigo-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'
+                            }`}
                         >
-                            Login to Admin Panel
+                            {loginLoading ? 'Logging in...' : 'Login to Admin Panel'}
                         </button>
                     </form>
                 </div>
@@ -188,9 +226,17 @@ const AdminPanel = () => {
         <div className="min-h-screen bg-gray-100">
             {/* Admin Header */}
             <div className="bg-gradient-to-r from-indigo-700 via-purple-700 to-indigo-800 text-white py-6 px-4 shadow-lg">
-                <div className="container mx-auto">
-                    <h1 className="text-2xl font-bold">🛡️ PEC Admin Panel</h1>
-                    <p className="text-indigo-200 text-sm mt-1">Manage events, registrations, and users</p>
+                <div className="container mx-auto flex justify-between items-center">
+                    <div>
+                        <h1 className="text-2xl font-bold">🛡️ PEC Admin Panel</h1>
+                        <p className="text-indigo-200 text-sm mt-1">Manage events, registrations, and users</p>
+                    </div>
+                    <button
+                        onClick={handleAdminLogout}
+                        className="bg-white text-indigo-700 px-4 py-2 rounded-lg font-semibold hover:bg-indigo-100 transition"
+                    >
+                        Logout
+                    </button>
                 </div>
             </div>
 
