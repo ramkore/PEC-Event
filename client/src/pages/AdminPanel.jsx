@@ -23,9 +23,14 @@ const AdminPanel = () => {
 
     // Check if admin is already authenticated on mount
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (user && user.isAdmin) {
-            setIsAdminAuthenticated(true);
+        try {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user && user.isAdmin) {
+                setIsAdminAuthenticated(true);
+            }
+        } catch (error) {
+            // Invalid JSON in localStorage, clear it
+            localStorage.removeItem('user');
         }
     }, []);
 
