@@ -27,7 +27,7 @@ const eventSchema = new mongoose.Schema({
     category: {
         type: String,
         required: [true, 'Please add a category'],
-        enum: ['Tech', 'Sports', 'Music', 'Business', 'Other'],
+        enum: ['Sports Fest', 'Technical Fest', 'Cultural Fest', 'Annual Day'],
         index: true
     },
     capacity: {

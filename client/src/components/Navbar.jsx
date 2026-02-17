@@ -8,7 +8,10 @@ const Navbar = () => {
     return (
         <nav className="bg-blue-600 text-white p-4 shadow-md">
             <div className="container mx-auto flex justify-between items-center">
-                <Link to="/" className="text-xl font-bold">PEC Events</Link>
+                <Link to="/" className="flex items-center gap-2 text-xl font-bold">
+                    <img src="/logo.png" alt="PEC Logo" className="h-10" />
+                    PEC Events
+                </Link>
                 <div>
                     <Link to="/" className="mr-4 hover:text-blue-200">Events</Link>
                     {user ? (

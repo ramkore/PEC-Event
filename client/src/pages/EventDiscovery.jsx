@@ -132,11 +132,10 @@ const EventDiscovery = () => {
                         onChange={(e) => setCategory(e.target.value)}
                     >
                         <option value="">All Categories</option>
-                        <option value="Tech">Tech</option>
-                        <option value="Sports">Sports</option>
-                        <option value="Music">Music</option>
-                        <option value="Business">Business</option>
-                        <option value="Other">Other</option>
+                        <option value="Sports Fest">Sports Fest</option>
+                        <option value="Technical Fest">Technical Fest</option>
+                        <option value="Cultural Fest">Cultural Fest</option>
+                        <option value="Annual Day">Annual Day</option>
                     </select>
                     <input
                         type="text"
@@ -273,8 +272,8 @@ const EventDiscovery = () => {
                                 onClick={() => setPage(p => Math.max(1, p - 1))}
                                 disabled={page === 1}
                                 className={`px-4 py-2 rounded font-medium transition ${page === 1
-                                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                        : 'bg-white text-blue-600 border border-blue-600 hover:bg-blue-50'
+                                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                    : 'bg-white text-blue-600 border border-blue-600 hover:bg-blue-50'
                                     }`}
                             >
                                 ← Previous
@@ -285,8 +284,8 @@ const EventDiscovery = () => {
                                     key={pageNum}
                                     onClick={() => setPage(pageNum)}
                                     className={`px-3 py-2 rounded font-medium transition ${pageNum === page
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-white text-gray-700 border hover:bg-gray-50'
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-white text-gray-700 border hover:bg-gray-50'
                                         }`}
                                 >
                                     {pageNum}
@@ -297,8 +296,8 @@ const EventDiscovery = () => {
                                 onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                                 disabled={page === totalPages}
                                 className={`px-4 py-2 rounded font-medium transition ${page === totalPages
-                                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                        : 'bg-white text-blue-600 border border-blue-600 hover:bg-blue-50'
+                                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                    : 'bg-white text-blue-600 border border-blue-600 hover:bg-blue-50'
                                     }`}
                             >
                                 Next →
