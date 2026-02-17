@@ -35,7 +35,7 @@ function App() {
                     <Route path="/events" element={<Events />} />
                     <Route path="/events/:id" element={<EventDetails />} />
                     <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-                    <Route path="/admin" element={<AdminRoute><AdminPanel /></AdminRoute>} />
+                    <Route path="/admin" element={<AdminPanel />} />
                 </Routes>
             </div>
             <ToastContainer position="bottom-right" />

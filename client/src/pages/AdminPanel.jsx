@@ -1,13 +1,16 @@
-import { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import api from '../utils/api';
-import AuthContext from '../context/AuthContext';
 
 const CATEGORIES = ['Sports Fest', 'Technical Fest', 'Cultural Fest', 'Annual Day'];
 
+const ADMIN_USERNAME = 'pec';
+const ADMIN_PASSWORD = 'pec123';
+
 const AdminPanel = () => {
-    const { user, loading: authLoading } = useContext(AuthContext);
-    const navigate = useNavigate();
+    const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+    const [loginUsername, setLoginUsername] = useState('');
+    const [loginPassword, setLoginPassword] = useState('');
+    const [loginError, setLoginError] = useState('');
     const [activeTab, setActiveTab] = useState('dashboard');
     const [stats, setStats] = useState(null);
     const [events, setEvents] = useState([]);
@@ -20,14 +23,20 @@ const AdminPanel = () => {
         name: '', description: '', location: '', date: '', category: CATEGORIES[0], capacity: ''
     });
 
-    useEffect(() => {
-        if (authLoading) return;
-        if (!user || !user.isAdmin) {
-            navigate('/');
-            return;
+    const handleAdminLogin = (e) => {
+        e.preventDefault();
+        if (loginUsername === ADMIN_USERNAME && loginPassword === ADMIN_PASSWORD) {
+            setIsAdminAuthenticated(true);
+            setLoginError('');
+        } else {
+            setLoginError('Invalid username or password');
         }
+    };
+
+    useEffect(() => {
+        if (!isAdminAuthenticated) return;
         fetchData(activeTab);
-    }, [activeTab, user, navigate, authLoading]);
+    }, [activeTab, isAdminAuthenticated]);
 
     const fetchData = async (tab) => {
         setLoading(true);
@@ -123,6 +132,57 @@ const AdminPanel = () => {
             </div>
         </div>
     );
+
+    if (!isAdminAuthenticated) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 flex items-center justify-center p-4">
+                <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
+                    <div className="text-center mb-8">
+                        <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-100 rounded-full mb-4">
+                            <span className="text-3xl">🛡️</span>
+                        </div>
+                        <h1 className="text-2xl font-bold text-gray-800">Admin Login</h1>
+                        <p className="text-gray-500 text-sm mt-1">Enter credentials to access the admin panel</p>
+                    </div>
+                    <form onSubmit={handleAdminLogin} className="space-y-5">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                            <input
+                                type="text"
+                                required
+                                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition"
+                                placeholder="Enter username"
+                                value={loginUsername}
+                                onChange={e => setLoginUsername(e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                            <input
+                                type="password"
+                                required
+                                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition"
+                                placeholder="Enter password"
+                                value={loginPassword}
+                                onChange={e => setLoginPassword(e.target.value)}
+                            />
+                        </div>
+                        {loginError && (
+                            <div className="bg-red-50 border border-red-200 text-red-600 text-sm rounded-lg p-3 text-center">
+                                {loginError}
+                            </div>
+                        )}
+                        <button
+                            type="submit"
+                            className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition font-semibold shadow-lg hover:shadow-xl"
+                        >
+                            Login to Admin Panel
+                        </button>
+                    </form>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-gray-100">
